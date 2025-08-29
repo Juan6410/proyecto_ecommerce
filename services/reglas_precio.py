@@ -1,16 +1,12 @@
 from abc import ABC, abstractmethod
 
 class ReglaPrecio(ABC):
-    """Interface ReglaPrecio según diagrama"""
-    
     @abstractmethod
     def es_aplicable(self, sku):
-        """Verifica si la regla aplica para un SKU específico"""
         pass
     
     @abstractmethod
     def calcular_total(self, cantidad, precio):
-        """Calcula el precio total según la regla específica"""
         pass
 
 
@@ -51,13 +47,6 @@ class ReglaPrecioEspecial(ReglaPrecio):
 
 
 class ManejadorReglas:
-    """
-    ManejadorReglas según diagrama UML
-    Principios aplicados:
-    - Single Responsibility: Solo maneja la obtención de reglas
-    - Open/Closed: Abierto para nuevas reglas, cerrado para modificación
-    - Creator: Crea las instancias de reglas (GRASP)
-    """
     
     def __init__(self):
         # Principio: Creator - ManejadorReglas crea las reglas
@@ -68,19 +57,6 @@ class ManejadorReglas:
         ]
     
     def obtener_regla(self, sku):
-        """
-        Factory method para obtener la regla correcta
-        Principio: Expert Information - tiene la información para decidir
-        
-        Args:
-            sku: Código del producto
-            
-        Returns:
-            ReglaPrecio: Instancia de la regla apropiada
-            
-        Raises:
-            ValueError: Si no existe regla para el SKU
-        """
         for regla in self._reglas:
             if regla.es_aplicable(sku):
                 return regla
@@ -88,10 +64,6 @@ class ManejadorReglas:
         raise ValueError(f"No existe regla de precio para el SKU: {sku}")
     
     def agregar_regla(self, regla):
-        """
-        Permite agregar nuevas reglas dinámicamente
-        Principio: Open/Closed - extensible sin modificar código existente
-        """
         if not isinstance(regla, ReglaPrecio):
             raise TypeError("La regla debe implementar ReglaPrecio")
         
