@@ -46,10 +46,13 @@ class Item:
             # Para productos por peso, mostrar en kg
             return f"{self.producto.nombre} - Cantidad: {self.cantidad} kg - Subtotal: ${self._total:,.2f}"
         else:
-            # Para productos normales y especiales
-            cantidad_display = int(self.cantidad) if self.cantidad.is_integer() else self.cantidad
+            # Para productos especiales
+            if isinstance(self.cantidad, float):
+                cantidad_display = int(self.cantidad) if self.cantidad.is_integer() else self.cantidad
+            else:
+                cantidad_display = self.cantidad
             return f"{self.producto.nombre} - Cantidad: {cantidad_display} unidades - Subtotal: ${self._total:,.2f}"
-    
+
     def __eq__(self, other):
         if not isinstance(other, Item):
             return False
